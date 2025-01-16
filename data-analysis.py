@@ -55,3 +55,13 @@ ax.set_ylabel('Base MSRP ($)', fontsize=12, fontweight='bold')
 
 fig.savefig('Boxplot of Vehicle Type Against Price')
 
+
+#Filtered dataset for the number of each vehicle type eligible for CAFV
+ev_df = pd.read_csv('Electric_Vehicle_Population_Data.csv')
+phev_cafv = ev_df[(ev_df['Electric Vehicle Type'] == 'Plug-in Hybrid Electric Vehicle (PHEV)') & (ev_df['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] == 'Clean Alternative Fuel Vehicle Eligible')].shape[0]
+bev_cafv = ev_df[(ev_df['Electric Vehicle Type'] == 'Battery Electric Vehicle (BEV)') & (ev_df['Clean Alternative Fuel Vehicle (CAFV) Eligibility'] == 'Clean Alternative Fuel Vehicle Eligible')].shape[0]
+total_phev = ev_df[ev_df['Electric Vehicle Type'] == 'Plug-in Hybrid Electric Vehicle (PHEV)'].shape[0]
+total_bev = ev_df[ev_df['Electric Vehicle Type'] == 'Battery Electric Vehicle (BEV)'].shape[0]
+summary_df = pd.DataFrame({'Vehicle Type': ['PHEV', 'BEV'],'CAFV Eligible Count': [phev_cafv, bev_cafv],'Total Vehicles':[total_phev,total_bev]})
+summary_df['Total Vehicles'] = [total_phev, total_bev]
+print(summary_df.head())
