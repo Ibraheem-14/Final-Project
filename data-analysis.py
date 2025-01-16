@@ -98,5 +98,5 @@ plt.ylabel('Number of BEVs',fontsize=12, fontweight='bold')
 
 plt.legend()
 plt.xticks(np.arange(min(years), 2032, 2), rotation=45)
-plt.savefig('Distrubution of EVs by County')
+plt.savefig('Exponential Regression Model')
  
