@@ -33,11 +33,13 @@ def test_exponential_model_data_prediction():
 
     # Test that years and counts align
     assert len(years) == len(counts), "Years and counts arrays have different lengths"
-    
+
     #Test predictions length
     assert len(predictions) == len(future_years), "Predictions array length doesn't match future years"
 
-
+def test_boxplot_visualisation ():
+    # Test that the visualisation has been made
+    assert os.path.exists('Exponential Regression Model.png'), "The file was not created."
 
 
 
