@@ -6,7 +6,7 @@ def load_data():
     data = pd.read_csv('Electric_Vehicle_Population_Data.csv')
     return data
 
-#ev_df = pd.read_csv('Electric_Vehicle_Population_Data.csv')
+
 def test_filteredData_isEmpty():
     ev_df = load_data()
     county_counts = ev_df['County'].value_counts().reset_index()
