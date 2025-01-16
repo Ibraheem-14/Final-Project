@@ -5,7 +5,7 @@ def load_data():
     data = pd.read_csv('Electric_Vehicle_Population_Data.csv')
     return data
 
-def test_boxplot_vehicleType_isEmpty():
+def test_boxplot_vehicleType():
     ev_df_reRead = load_data()
     ev_df_reRead =  pd.read_csv('Electric_Vehicle_Population_Data.csv')
     ev_df_reRead = ev_df_reRead[(ev_df_reRead['Base MSRP'] != 0) & (ev_df_reRead['Base MSRP'] != 845000)].copy()
