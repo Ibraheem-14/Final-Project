@@ -2,7 +2,8 @@ import pandas as pd
 import pytest
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import numpy as np
+from scipy.optimize import curve_fit
 
 # Load EV data
 ev_df = pd.read_csv('Electric_Vehicle_Population_Data.csv')
@@ -23,7 +24,6 @@ plt.figure(figsize=(12, 8))
 
 bars = plt.barh(top_counties['County'], top_counties['EV_Count'],color=colors)
 
-
 for i, bar in enumerate(bars):
     width = bar.get_width()
     plt.text(width + 100, i, f'{top_counties["Percentage"].iloc[i]:.1f}%', va='center', ha='left')  
@@ -36,6 +36,8 @@ ax = plt.gca()
 ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: format(int(x), ',')))
 
 plt.savefig('Distrubution of EVs by County')
+
+
 
 
 # Boxplot comapring the distrubution of price of BEVs comapred to PHEVs
@@ -65,3 +67,36 @@ total_bev = ev_df[ev_df['Electric Vehicle Type'] == 'Battery Electric Vehicle (B
 summary_df = pd.DataFrame({'Vehicle Type': ['PHEV', 'BEV'],'CAFV Eligible Count': [phev_cafv, bev_cafv],'Total Vehicles':[total_phev,total_bev]})
 summary_df['Total Vehicles'] = [total_phev, total_bev]
 print(summary_df.head())
+
+
+
+
+
+# Preperation of data
+bev_counts = ev_df[ev_df['Electric Vehicle Type'] == 'Battery Electric Vehicle (BEV)']['Model Year'].value_counts().sort_index()
+bev_counts = bev_counts[bev_counts.index ]
+years = bev_counts.index.values
+counts = bev_counts.values
+
+# Defining of the exponential model
+def exp_model(x, a, b, c): 
+    return a * np.exp(b * (x - years.min())) + c
+params, _ = curve_fit(exp_model, years, counts, p0=[100, 0.1, 100])
+
+# Predictions
+future_years = np.linspace(years.min(), 2030, 100)
+predictions = exp_model(future_years, *params)
+
+plt.figure(figsize=(12, 7))
+plt.plot(years, counts, 'b-', label='Historical Data', linewidth=2, marker='o',color='#0b4db3')
+plt.plot(future_years, predictions, 'r--', label='Prediction', linewidth=2,color='red')
+plt.axvline(x=2025, color='gray', linestyle=':', alpha=0.5, label='Current Year')
+
+plt.title('BEV Growth: Historical Data and Future Predictions',fontsize=14, fontweight='bold')
+plt.xlabel('Year',fontsize=12, fontweight='bold')
+plt.ylabel('Number of BEVs',fontsize=12, fontweight='bold')
+
+plt.legend()
+plt.xticks(np.arange(min(years), 2032, 2), rotation=45)
+plt.savefig('Distrubution of EVs by County')
+ 
