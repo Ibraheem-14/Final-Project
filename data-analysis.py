@@ -70,7 +70,7 @@ print(summary_df.head())
 
 
 
-
+# Exponential predictive model
 
 # Preperation of data
 bev_counts = ev_df[ev_df['Electric Vehicle Type'] == 'Battery Electric Vehicle (BEV)']['Model Year'].value_counts().sort_index()
@@ -99,4 +99,31 @@ plt.ylabel('Number of BEVs',fontsize=12, fontweight='bold')
 plt.legend()
 plt.xticks(np.arange(min(years), 2032, 2), rotation=45)
 plt.savefig('Exponential Regression Model')
- 
+
+
+
+# Plot of residuals 
+bev_counts = ev_df[ev_df['Electric Vehicle Type'] == 'Battery Electric Vehicle (BEV)']['Model Year'].value_counts().sort_index()
+years = bev_counts.index.values
+counts = bev_counts.values
+
+
+def exp_model(x, a, b, c): 
+    return a * np.exp(b * (x - years.min())) + c
+
+params, _ = curve_fit(exp_model, years, counts, p0=[100, 0.1, 100])
+
+
+predictions = exp_model(years, *params)
+residuals = counts - predictions
+
+# Create residual plot
+plt.figure(figsize=(12, 7))
+plt.scatter(years, residuals, color='#0b4db3')
+plt.axhline(y=0, color='red', linestyle='--')
+plt.grid(True, alpha=0.2)
+
+plt.title('Residual Plot: BEV Growth Model', fontsize=14, fontweight='bold', pad=20)
+plt.xlabel('Year', fontsize=12, fontweight='bold')
+plt.ylabel('Residual Value (Actual - Predicted)', fontsize=12, fontweight='bold')
+plt.savefig('Residuals Plot')
