@@ -1,6 +1,7 @@
 import pandas as pd
 import pytest
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 # Load EV data
@@ -35,4 +36,22 @@ ax = plt.gca()
 ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: format(int(x), ',')))
 
 plt.savefig('Distrubution of EVs by County')
+
+
+# Boxplot comapring the distrubution of price of BEVs comapred to PHEVs
+ev_df_reRead =  pd.read_csv('Electric_Vehicle_Population_Data.csv')
+ev_df_reRead = ev_df_reRead[(ev_df_reRead['Base MSRP'] != 0) & (ev_df_reRead['Base MSRP'] != 845000)].copy()
+
+ev_df_reRead['Vehicle Type'] = ev_df_reRead['Electric Vehicle Type'].map({'Battery Electric Vehicle (BEV)': 'BEV','Plug-in Hybrid Electric Vehicle (PHEV)': 'PHEV'})
+
+fig, ax = plt.subplots(figsize=(12, 8))
+
+sns.boxplot(x='Vehicle Type', y='Base MSRP', data=ev_df_reRead, palette=['#084594', '#2171b5'], width=0.5, showfliers=False, ax=ax)  
+
+
+ax.set_title('Price Distribution: BEV vs PHEV (Excluding Outliers)', fontsize=14, fontweight='bold', pad=20)
+ax.set_xlabel('Vehicle Type', fontsize=12, fontweight='bold')
+ax.set_ylabel('Base MSRP ($)', fontsize=12, fontweight='bold')
+
+fig.savefig('Boxplot of Vehicle Type Against Price')
 
