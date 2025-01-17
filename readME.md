@@ -11,12 +11,14 @@ The hypothesis investigated was:
 
 ## 2. Project Structure
 - **`.circleci/`**: Configuration files for CircleCI integration for testing every commit.
-- **`Visualisations/`**: Stores all visualisations related to the analysis.
-- **`tests/`**: Includes all test files ran by CircleCI for every commit.
+- **`Visualisations`**: Stores all visualisations related to the analysis.
+- **`tests`**: Includes all test files ran by CircleCI for every commit.
 - **`Electric_Vehicle_Population_Data.csv`**: The dataset used for the analysis.
-- **`README.md`**: Project documentation.
-- **`data_analysis.py`**: Python script for data cleaning, data analysis, and creating visualisations.
 - **`requirements.txt`**: Lists Python dependencies needed to run the analysis.
+- **`data_analysis.py`**: Python script for data cleaning, data analysis, and creating visualisations.
+- **`README.md`**: Project documentation.
+
+
 
 ---
 
